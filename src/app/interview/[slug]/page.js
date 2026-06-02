@@ -113,7 +113,10 @@ const InterviewSection = ({ params }) => {
         setUserAnswer(transcript);
     }, [transcript]);
 
-    const toggleWebcam = () => setIsVideoOn(!isVideoOn);
+    const toggleWebcam = () => {
+    if (isVideoOn) setMediaError(null);
+    setIsVideoOn(!isVideoOn);
+};
 
     const toggleSpeechRecognition = () => {
         if (listening) {
@@ -231,7 +234,7 @@ const InterviewSection = ({ params }) => {
                                         <WebCam 
                                             ref={webcamRef} 
                                             className="w-full h-full object-cover transform scale-x-[-1]"
-                                            onUserMediaError={(err) => setMediaError(err.message)}
+                                            onUserMediaError={(err) => setMediaError(err.name || err.message || "Camera access denied")}
                                             onUserMedia={() => setMediaError(null)}
                                         />
                                         {mediaError && (
